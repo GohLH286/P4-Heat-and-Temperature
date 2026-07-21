@@ -767,22 +767,41 @@ loadSaved();
 renderShell();
 
 
-async function quickSubmit(){
- const name=prompt("Student Name:");
- if(!name)return;
- const cls=prompt("Class:");
- const payload={name:name,class:cls,score:"Completed",answers:"Heat activity submitted"};
- try{
- await fetch("https://script.google.com/macros/s/AKfycbxTbci4egmHqyoTusk-Ji6fKto-EabX2T_0ceQGr8c8o84Q2pJiiAPutJNZ58O7DAOt/exec",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
- alert("Submission Successful!");
- }catch(e){alert("Submission failed");}
+async function quickSubmit() {
+    const name = prompt("Student Name:");
+    if (!name) return;
+
+    const cls = prompt("Class:");
+    if (!cls) return;
+
+    const payload = {
+        name: name,
+        class: cls,
+        score: "Completed",
+        answers: "Heat activity submitted"
+    };
+
+    try {
+
+        const response = await fetch(
+            "https://script.google.com/macros/s/AKfycbxTbci4egmHqyoTusk-Ji6fKto-EabX2T_0ceQGr8c8o84Q2pJiiAPutJNZ58O7DAOt/exec",
+            {
+                method: "POST",
+                mode: "no-cors",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            }
+        );
+
+        alert("✅ Submission sent to teacher.");
+
+    } catch (err) {
+        console.error(err);
+        alert("❌ Submission failed.\n" + err);
+    }
 }
-window.addEventListener('load',()=>{
- const b=document.createElement('button');
- b.textContent='Submit to Teacher';
- b.style.position='fixed';b.style.bottom='20px';b.style.right='20px';b.style.zIndex='9999';
- b.onclick=quickSubmit;
- document.body.appendChild(b);
 });
 </script>
 </body>
